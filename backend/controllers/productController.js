@@ -1,6 +1,7 @@
 const Product = require("../models/productModel");
 const ErrorHander = require("../utils/errorhander");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const ApiFeatures = require("../utils/apifeatures");
 
 // Create Product --- Only for Admin
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
@@ -15,8 +16,15 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
 
 //Get all Products
 exports.getAllProducts = catchAsyncErrors(async (req, res) => {
+    const resultPerPage = 5;
+    const productCount = await Product.countDocuments();
 
-    const products = await Product.find();
+    const apiFeature = new ApiFeatures(Product.find(), req.query)
+        .search()
+        .filter()
+        .pagination(resultPerPage);
+
+    const products = await apiFeature.query;
 
     res.status(200).json({
         success: true,
@@ -29,8 +37,8 @@ exports.getAllProducts = catchAsyncErrors(async (req, res) => {
 exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
     let product = await Product.findById(req.params.id);
 
-    if(!product){
-        return next(new ErrorHander("Product not Found",404));
+    if (!product) {
+        return next(new ErrorHander("Product not Found", 404));
     }
 
     product = await Product.findByIdAndUpdate(req.params.id, req.body, {
@@ -51,8 +59,8 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
 
     const product = await Product.findById(req.params.id);
 
-    if(!product){
-        return next(new ErrorHander("Product not Found",404));
+    if (!product) {
+        return next(new ErrorHander("Product not Found", 404));
     }
 
     await product.remove();
@@ -66,16 +74,17 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
 
 
 //Get a Product Details
-exports.getProductDetails = catchAsyncErrors(async(req,res,next)=>{
+exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
 
-    if(!product){
-        return next(new ErrorHander("Product not Found",404));
+    if (!product) {
+        return next(new ErrorHander("Product not Found", 404));
     }
 
     res.status(200).json({
 
-        success:true,
-        product
+        success: true,
+        product,
+        productCount,
     });
 });
