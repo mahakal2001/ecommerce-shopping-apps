@@ -5,6 +5,9 @@ const ApiFeatures = require("../utils/apifeatures");
 
 // Create Product --- Only for Admin
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
+
+    req.body.user = req.user.id;
+    
     const product = await Product.create(req.body);
 
     res.status(201).json({
@@ -88,3 +91,5 @@ exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
         productCount,
     });
 });
+
+// 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
