@@ -1,0 +1,26 @@
+.loading {
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  display: grid;
+  place-items: center;
+  max-width: 100%;
+}
+
+.loading > div {
+  width: 10vmax;
+  height: 10vmax;
+  /* background-image: linear-gradient(rgb(75, 5, 133), blue, rgb(20, 223, 206), rgb(9, 218, 9), yellow, rgb(255, 102, 0), red ); */
+
+  border-bottom: 5px solid rgba(14, 190, 23, 0.76);
+
+  border-radius: 50%;
+
+  animation: loadingRotate 800ms linear infinite;
+}
+
+@keyframes loadingRotate {
+  to {
+    transform: rotateZ(-360deg);
+  }
+}

@@ -9,7 +9,7 @@ import {
 import WebFont from "webfontloader";
 import React from "react";
 import Home from "./component/Home/Home";
-
+import ProductDetails from "./component/Product/ProductDetails.js";
 
 
 function App() {
@@ -25,6 +25,8 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
+
         
       </Routes>
       
